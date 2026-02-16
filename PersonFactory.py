@@ -6,6 +6,7 @@ from Person import Person
 class PersonFactory():
     def get_person(self, year_born):
         # Determine decade based on year_born
+        year_born = self.clamp_year_to_data(year_born)
         decade = f"{(year_born // 10) * 10}s"
 
         # Choose first name (weighted)
@@ -102,3 +103,13 @@ class PersonFactory():
         names = [name for name, weight in choices] # CITE: https://stackoverflow.com/questions/3679694/a-weighted-version-of-random-choice
         weights = [weight for name, weight in choices]
         return random.choices(names, weights=weights, k=1)[0] # CITE: https://docs.python.org/3/library/random.html#random.choices
+    
+    '''
+    Clamps a year to be within the range of years in the data to avoid out of bounds errors
+    '''
+    def clamp_year_to_data(self, year: int) -> int:
+        if year < 1950:
+            return 1950
+        if year > 2129:
+            return 2129
+        return year
